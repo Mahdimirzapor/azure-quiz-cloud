@@ -1,0 +1,19 @@
+{
+  "name": "آزمون آموزشی",
+  "short_name": "آزمون",
+  "description": "سامانه آزمون آموزشی",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b1220",
+  "theme_color": "#0f766e",
+  "dir": "rtl",
+  "lang": "fa",
+  "icons": [
+    {
+      "src": "/static/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

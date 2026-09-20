@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a1628" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="description" content="آزمون آموزشی Azure Quiz" />
+  <link rel="manifest" href="/manifest.webmanifest" />
+  <link rel="icon" href="/static/icons/icon.svg" type="image/svg+xml" />
+  <title>آزمون آموزشی</title>
+  <link rel="stylesheet" href="/static/css/app.css" />
+  <script src="https://developer.eitaa.com/eitaa-web-app.js"></script>
+</head>
+<body data-base="">
+  <div id="app">
+    <header class="topbar">
+      <div class="brand">آزمون آموزشی</div>
+      <button id="btn-logout" class="btn ghost hidden" type="button">خروج</button>
+    </header>
+    <main id="screens">
+      <section id="screen-login" class="screen">
+        <div class="card">
+          <h1>ورود اعضا</h1>
+          <p class="muted">کد ملی خود را وارد کنید</p>
+          <label class="field">
+            <span>کد ملی</span>
+            <input id="input-nid" type="text" inputmode="numeric" maxlength="10" autocomplete="off" placeholder="مثال: 0012345678" />
+          </label>
+          <button id="btn-login" class="btn primary block" type="button">ورود</button>
+          <p id="login-error" class="error hidden"></p>
+        </div>
+      </section>
+      <section id="screen-home" class="screen hidden">
+        <div class="card">
+          <h1 id="welcome">سلام</h1>
+          <div id="welcome-guide" class="guide hidden">
+            <div class="guide-title">راهنمای سریع</div>
+            <ol>
+              <li>از لیست زیر یک <b>درس</b> انتخاب کنید.</li>
+              <li>به <b>۱۰ سؤال</b> پاسخ دهید.</li>
+              <li>در پایان، <b>درصد و نتیجه</b> ذخیره می‌شود.</li>
+              <li>تاریخچه آزمون‌های قبلی را همین‌جا ببینید.</li>
+            </ol>
+            <button id="btn-dismiss-guide" class="btn secondary block" type="button">متوجه شدم</button>
+          </div>
+          <p class="muted">یک درس را برای شروع آزمون انتخاب کنید</p>
+          <div id="lesson-list" class="list"></div>
+          <h3>آزمون‌های قبلی من</h3>
+          <div id="my-history" class="table-wrap"></div>
+          <button id="btn-admin" class="btn secondary block hidden" type="button">پنل مدیریت</button>
+        </div>
+      </section>
+      <section id="screen-quiz" class="screen hidden">
+        <div class="card">
+          <div class="quiz-meta"><span id="quiz-lesson"></span><span id="quiz-progress"></span></div>
+          <h2 id="quiz-question"></h2>
+          <div id="quiz-options" class="options"></div>
+          <p id="quiz-feedback" class="feedback hidden"></p>
+          <button id="btn-next" class="btn primary block hidden" type="button">سؤال بعدی</button>
+        </div>
+      </section>
+      <section id="screen-result" class="screen hidden">
+        <div class="card center">
+          <h1>نتیجه آزمون</h1>
+          <div id="result-score" class="score">—</div>
+          <p id="result-detail" class="muted"></p>
+          <button id="btn-home" class="btn primary block" type="button">بازگشت به منو</button>
+        </div>
+      </section>
+      <section id="screen-admin" class="screen hidden">
+        <div class="card">
+          <h1>پنل مدیریت</h1>
+          <div id="admin-stats" class="stats"></div>
+          <h3>اعضا</h3>
+          <div class="admin-form" id="member-form">
+            <input type="hidden" id="member-edit-id" value="" />
+            <label class="field" style="margin:0"><span>کد ملی</span><input id="admin-nid" type="text" inputmode="numeric" maxlength="10" /></label>
+            <div class="row">
+              <label class="field" style="margin:0"><span>نام</span><input id="admin-first" type="text" /></label>
+              <label class="field" style="margin:0"><span>نام خانوادگی</span><input id="admin-last" type="text" /></label>
+            </div>
+            <label class="field" style="margin:0"><span>شماره همراه</span><input id="admin-phone" type="text" inputmode="tel" placeholder="09901234567" /></label>
+            <div class="row">
+              <button id="btn-add-member" class="btn primary block" type="button" style="margin:0">ثبت عضو</button>
+              <button id="btn-cancel-member-edit" class="btn secondary block hidden" type="button" style="margin:0">انصراف ویرایش</button>
+            </div>
+            <div class="row">
+              <button id="btn-import-members" class="btn secondary block" type="button" style="margin:0">افزودن xlsx</button>
+              <button id="btn-export-members" class="btn secondary block" type="button" style="margin:0">خروجی xlsx</button>
+            </div>
+            <input id="file-members" type="file" accept=".xlsx" class="hidden" />
+            <p id="admin-member-msg" class="error hidden" style="margin:0"></p>
+          </div>
+          <div id="admin-members" class="table-wrap"></div>
+          <h3>دروس و سؤالات</h3>
+          <div class="admin-form">
+            <button id="btn-import-questions" class="btn primary block" type="button" style="margin:0">افزودن سوالات با xlsx</button>
+            <input id="file-questions" type="file" accept=".xlsx" class="hidden" />
+            <p id="admin-q-msg" class="error hidden" style="margin:0"></p>
+          </div>
+          <div id="admin-lessons" class="table-wrap"></div>
+          <h3>نتایج و وضعیت اعضا</h3>
+          <div class="filter-row">
+            <label class="field" style="margin:0;flex:1">
+              <span>فیلتر</span>
+              <select id="results-filter">
+                <option value="all">همه نتایج اخیر</option>
+                <option value="complete">تمام دروس را امتحان داده‌اند</option>
+                <option value="incomplete">حداقل یک درس را امتحان نداده‌اند</option>
+              </select>
+            </label>
+          </div>
+          <div class="row" style="margin-top:10px">
+            <button id="btn-export-complete" class="btn secondary block" type="button" style="margin:0">خروجی کاربران تکمیل‌شده</button>
+            <button id="btn-export-incomplete" class="btn secondary block" type="button" style="margin:0">خروجی کاربران ناقص</button>
+          </div>
+          <div id="admin-results" class="table-wrap" style="margin-top:12px"></div>
+          <button id="btn-admin-back" class="btn secondary block" type="button">بازگشت</button>
+        </div>
+      </section>
+    </main>
+    <div id="toast" class="toast hidden"></div>
+  </div>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>
